@@ -117,18 +117,21 @@
             /* Scroll fluido su iOS */
             padding-right: 5px;
             /* Spazio per la scrollbar */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+    
+            /* Evita il rimbalzo elastico tipico di iOS che fa "staccare" l'header */
+            overscroll-behavior-y: contain; 
         }
         /* Nasconde la scrollbar per un look più pulito (opzionale) */
-        
-        .scroll-content::-webkit-scrollbar {
-            width: 5px;
-        }
-        
         .scroll-content::-webkit-scrollbar-thumb {
             background-color: var(--border-color);
             border-radius: 99px;
         }
-        /* Barra delle azioni inferiore fissa */
+        /* Nasconde la scrollbar per Chrome, Safari e Opera */
+        .scroll-content::-webkit-scrollbar {
+            display: none;
+        }
         
         .action-bar {
             flex-shrink: 0;
