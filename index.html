@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz NRTLC - 115 Domande (Testo Originale)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+      .option-btn {
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-50 min-h-screen text-slate-900 flex items-center justify-center p-4"
+  >
+    <div id="root" class="w-full max-w-3xl"></div>
+
+    <script type="text/babel">
+      // Data format: [Question, CorrectOption, Distractor1, Distractor2]
+      // Sincronizzato parola per parola con il testo fornito dall'utente.
+      const rawData = [
+        [
+          'Tra i principi costituzionali che originariamente ispirarono i servizi di telefonia è ricompreso',
+          'Art. 15: La libertà e la segretezza della corrispondenza e di ogni altra forma di comunicazione sono inviolabili',
+          'Art. 21: Tutti hanno diritto di manifestare liberamente il proprio pensiero con la parola, lo scritto e ogni altro mezzo di diffusione.',
+          'Art.41: L’iniziativa economica privata è libera.',
+        ],
+        [
+          'Tra i principi costituzionali che originariamente ispirarono i servizi radiotelevisivi è ricompreso',
+          'Art. 21: Tutti hanno diritto di manifestare liberamente il proprio pensiero con la parola, lo scritto e ogni altro mezzo di diffusione.',
+          'Art. 15: La libertà e la segretezza della corrispondenza e di ogni altra forma di comunicazione sono inviolabili.',
+          'Art. 43: ai fini di utilità generale la legge può riservare originariamente o trasferire allo stato determinate imprese che si riferiscano a servizi pubblici essenziali',
+        ],
+        [
+          'Il Servizio Universale definisce:',
+          'un insieme minimo di servizi di comunicazione elettronica',
+          'regole di libero accesso al mercato dei servizi di comunicazione elettronica',
+          'un unico operatore incaricato della sua fornitura',
+        ],
+        [
+          'La condizione di operatore a prevalente rilevanza di mercato',
+          'è determinata dalle direttive secondo parametri stabiliti e periodicamente aggiornabili',
+          'non può mai essere raggiunta in un regime di mercato libero',
+          'viene acquisita a turno dai vari operatori secondo meccanismi stabiliti dalla legge',
+        ],
+        [
+          'L’AGCOM',
+          'ha il potere di dirimere le controversie tra operatori in tema di interconnessione e accesso alle infrastrutture di TLC',
+          'non può sostituirsi all’autorità giudiziaria per dirimere le controversie tra operatori tranne che per questioni di lieve entità',
+          'non si occupa di controversie legate a problematiche antitrust in quanto in capo ad una apposita autorità',
+        ],
+        [
+          'Il Piano Nazionale per la Banda Ultralarga',
+          'è un piano da 6 miliardi di euro con il quale il governo italiano ha voluto sovvenzionare il passaggio dal rame alla fibra',
+          'è il documento operativo principale dell’AGCOM per la programmazione degli interventi di realizzazione della nuova infrastruttura nazionale in fibra ottica',
+          'è un documento del ministero dello sviluppo economico che pone ordine e armonizza dal punto di vista normativo le varie azioni intraprese dai soggetti privati in tema di reti di accesso di nuova generazione',
+        ],
+        [
+          'Il Sistema Integrato delle Comunicazioni è uno strumento introdotto dal T.U. sulla Radiotelevisione',
+          'che deriva nuovi parametri di concentrazione di mercato a partire da un paniere eterogeneo di settori economici improntati sui contenuti, comprendenti anche l’editoria, il cinema e le sponsorizzazioni',
+          'che recepisce e porta a compimento le indicazioni della direttiva quadro 2002/21/CE che prevede di ricomprendere tra le comunicazioni elettroniche anche gli apparati ed i servizi radiotelevisivi',
+          'che di fatto assorbe gran parte dei ruoli del Garante per la radiodiffusione e l’editoria',
+        ],
+        [
+          'Il diritto d’autore tutela',
+          'la forma estrinseca di un’idea originale e nuova',
+          'un’idea che presenti caratteri di originalità e novità',
+          'la forma espressiva o artistica di ogni idea che presenti carattere di originalità',
+        ],
+        [
+          'Con la Direttiva Europea (c.d. Barnier) 2014/26/UE',
+          'i titolari di DdA possono affidare la tutela dei propri diritti alla società che preferiscono all’interno dell’Unione Europea',
+          'si prevedono termini differenziati per la durata del diritto d’autore a seconda della tipologia di opera',
+          'i titolari di DdA non possono affidare la tutela dei propri diritti a più di una società all’interno dell’Unione Europea',
+        ],
+        [
+          'I principi di fondo dell’attività di standardizzazione sono',
+          'consensualità, democraticità, trasparenza',
+          'qualità, economicità, diffondibilità',
+          'interoperabilità, neutralità, sicurezza',
+        ],
+        [
+          'Quale delle seguenti affermazioni è falsa',
+          'L’attività di standardizzazione è affrancata da sanzioni per mezzo della stessa normativa che sanziona gli accordi di cartello tra imprese',
+          'La presenza di standard può ostare allo sviluppo di una certa tecnologia',
+          'E insito nell’attività di standardizzazione il superamento delle problematiche proprietà industriale relative alle soluzioni standardizzate',
+        ],
+        [
+          'Un brevetto',
+          'è un documento che contiene rivendicazioni tecniche che hanno anche natura giuridica',
+          'è un titolo giuridico la cui validità si estende a partire dalla data di concessione',
+          'è un documento tecnico i cui aspetti giuridici sono regolati dal codice della proprietà industriale',
+        ],
+        [
+          'Un brevetto',
+          'Viene concesso da autorità nazionali e/o internazionali',
+          'Viene sempre dapprima concesso da autorità nazionali',
+          'Per sua natura viene concesso solamente da organismi internazionali',
+        ],
+        [
+          'Secondo la vigente normativa sulla privacy, il trattamento di dati personali',
+          'è consentito anche se non espressamente concesso in caso di salvaguardia degli interessi vitali dell’interessato',
+          'non è lecito se non orientato all’esecuzione di un contratto di cui l’interessato è parte in causa',
+          'è sempre espressamente autorizzato tramite modulo di consenso al trattamento',
+        ],
+        [
+          'Negli anni ’90 si è realizzato a livello europeo un passaggio',
+          'dal diritto dei media al diritto della convergenza',
+          'dal diritto della telefonia al diritto delia radiotelevisione',
+          'dal diritto delle comunicazioni analogiche al diritto delle comunicazioni elettroniche',
+        ],
+        [
+          'Negli anni ’90 le direttive europee, articolate in tre fronti, che hanno avviato il processo di liberalizzazione nel settore delle TLC sono state',
+          '7',
+          '3',
+          '12',
+        ],
+        [
+          'Le competenze del legislatore Europeo in tema di sviluppo di reti transeuropee di TLC furono stabilite',
+          'nel Trattato di Maastricht del 1992',
+          'nel Libro verde della Commissione europea 1987',
+          'nella sentenza della Corte di giustizia europea del 1985',
+        ],
+        [
+          'Con la direttiva 96/19/CE, i fornitori di servizi liberalizzati',
+          'possono collegare la propria rete a quella pubblica',
+          'non possono costruire proprie infrastrutture di TLC',
+          'non possono utilizzare infrastrutture di soggetti terzi',
+        ],
+        [
+          'In tema di titoli abilitativi definiti nella direttiva 97/13/CE',
+          'l’autorizzazione generale è un titolo che prevede un eventuale controllo ex-post da parte dell’autorità di regolamentazione',
+          'l’autorizzazione generale è un titolo rilasciato dall’autorità di regolamentazione nazionale',
+          'l’autorizzazione generale è un titolo rilasciato dall’autorità di regolamentazione europea',
+        ],
+        [
+          'Nei fattori che concorrono alla definizione del c.d. Servizio Universale sono...',
+          'obbligo di fornitura del S.U. ad un prezzo abbordabile',
+          'obbligo di selezione di un unico operatore incaricalo del S.U.',
+          'obbligo di garantire una diversificazione dell’offerto rivolto agli utenti',
+        ],
+        [
+          'La regolamentazione asimmetrica è uno strumento che, nell’ambito della normativa comunitaria nel settore delle TLC',
+          'è stata utilizzata per favorire i processi di liberalizzazione con garanzie alla concorrenza',
+          'viene utilizzata per mantenere, ove risulti necessario, condizioni di monopoli di fatto',
+          'è stata utilizzata per rendere molto graduale l’entrata nel mercato dei nuovi operatori',
+        ],
+        [
+          'La legge 249/97',
+          'istituisce l’AGCOM',
+          'regola l’assegnazione delle frequenze radiotelevisive nazionali',
+          'stabilisce le norme per la protezione dei dati personali nel settore delle telecomunicazioni',
+        ],
+        [
+          "Alla fine degli anni 2000 il legislatore europeo è portato a ripensare parzialmente l'originario piano di libero mercato",
+          'per imprimere una maggiore uniformità nelle legislazioni nazionali secondo un modello centrato su atti di Soft Law',
+          'per tollerare possibili situazioni di monopolio parziale nel settore delle reti di nuova generazione secondo modelli Open Network Provision',
+          'per tollerare possibili situazioni di monopolio parziale nel settore della radiotelevisione, secondo modelli di proporzionalità rispetto al Digital Single Market',
+        ],
+        [
+          'Tra i motivi principati della necessità di ricorrere nel 2009 ad un terzo pacchetto di direttive comunitarie in tema di normativo delle TLC si può includere',
+          'il non sufficiente grado di dettaglio nella definizione di alcuni aspetti contenuti nel precedente pacchetto di direttive del 2002',
+          'la scarsa chiarezza a livello di obiettivi finali da raggiungere del precedente pacchetto di direttive del 2002',
+          'la necessità di dare immediate risposte e inserire correttivi in relazione economica iniziata nel 2008',
+        ],
+        [
+          'Nella convergenza tecnologica',
+          'i mezzi si confondono con i servizi',
+          'vi è una distinzione marcata tra mezzi e servizi',
+          'più servizi possono essere legati ad un mezzo di comunicazione e viceversa.',
+        ],
+        [
+          'Il c.d. Codice delle Comunicazioni Elettroniche si discosta in maniera sostanziale dal pacchetto di direttive europee del 2002 in quanto',
+          'mantiene la distinzione tra telecomunicazioni e radiotelevisione',
+          'non è il provvedimento normativo che le recepisce',
+          'aumenta i poteri in capo all’AGCOM',
+        ],
+        [
+          'Il c.d. Codice delle Comunicazioni Elettroniche (variante)',
+          'mantiene la distinzione tra telecomunicazioni e radiotelevisione',
+          'riduce i poteri in capo all’AGCOM',
+          'abolisce la distinzione tra telecomunicazioni e radiotelevisione',
+        ],
+        [
+          'Il c.d. Codice delle Comunicazioni Elettroniche...',
+          'recepisce le direttive europee del 2002 pur discostandosi da esse per aspetti legati alle tempistiche di rilascio dei titoli abilitativi',
+          'rimanda a successiva legge il recepimento delle direttive del 2002 per quanto riguarda la disciplina dei titoli abilitativi',
+          'recepisce le direttive europee del 2002 non occupandosi tuttavia di titoli abilitativi in quanto già normati nella legge 249/97',
+        ],
+        [
+          'Alcuni vincoli e prescrizioni riguardanti la realizzazione di reti di nuova generazione in fibra ottica sono imposti',
+          'dal c.d. codice del cablaggio verticale',
+          'dall’accordo internazionale TRIPS',
+          'dal codice della strada',
+        ],
+        [
+          'Per effetto del c.d. decreto Romani del 2010',
+          'i servizi televisivi pay-per-view non rientrano nella disciplina dei sistemi radiotelevisivi',
+          'i canali time shifted hanno un peso inferiore ma non nullo nel computo dei limiti anticoncentrazione',
+          'non fa una concreta distinzione tra servizi audiovisivi lineari e non lineari',
+        ],
+        [
+          'Nell’ambito del diritto d’autore, i c.d. diritti connessi',
+          'sono diritti di sfruttamento economico che nascono in capo a soggetti diversi dall’autore di un’opera',
+          'sono diritti di sfruttamento di un’opera connessa (derivata) rispetto ad un’opera di riferimento',
+          'è l’insieme dei vari diritti di sfruttamento dell’opera (es. diritto di riprodurre, di pubblicare, di noleggiare, ecc.)',
+        ],
+        [
+          'In un documento brevettuale, le ”rivendicazioni”',
+          'costituiscono la parte del brevetto con maggiore rilevanza giuridica',
+          'sono clausole di salvaguardia relative alla novità ed originalità dell’invenzione',
+          'descrivono l’invenzione in termini astratti, al contrario delle esemplificazioni',
+        ],
+        [
+          'Un organismo di standardizzazione',
+          'è generalmente un ente consortile di diritto privato',
+          'si finanzia con la fiscalità generale',
+          'è generalmente un consorzio di aziende private',
+        ],
+        [
+          'Con la direttiva 96/19/CE, i fornitori di servizi liberalizzati (variante)',
+          'possono costruire proprie infrastrutture di TLC',
+          'non possono utilizzare infrastrutture di soggetti terzi',
+          'non possono costruire proprie infrastrutture di TLC',
+        ],
+        [
+          'L’AGCOM (variante poteri)',
+          'ha poteri para-giurisdizionali che gli consentono di dirimere le controversie tra operatori',
+          'collabora con il potere giudiziario (TAR del Lazio) per dirimere le controversie tra operatori',
+          'non si occupa di controversie tra operatori in tema di accesso alle infrastrutture di TLC in quanto oggetto di riserva di legge',
+        ],
+        [
+          'Uno standard de jure',
+          'è definito da apposite organizzazioni riconosciute a livello nazionale o internazionale',
+          'viene introdotto a mezzo di leggi o atti aventi forza di legge',
+          'è legato a processi di armonizzazione con la normativa europea',
+        ],
+        [
+          'Un software non è brevettabile',
+          'se non è associato ad un dispositivo fisico o se non riferito ad un effetto tecnico',
+          'quando si decide di tutelarlo tramite il diritto d’autore',
+          'anche se implementa un’idea nuova e al contempo inventiva',
+        ],
+        [
+          'Un software è brevettabile',
+          'Se associato ad un apparato o comunque ad un effetto tecnico',
+          'In quanto tale, anche se la sua forma esterna non fosse tutelabile tramite copyright',
+          'Se implementa un’idea nuova e al contempo inventiva',
+        ],
+        [
+          'Cosa deve fare, tra l’altro, chi vuol esser in regola col GDPR?',
+          'Adottare misure tecniche e organizzative adeguate per la protezione dei dati personali',
+          'è sufficiente assicurarsi di aver fatto l’informativa',
+          'Avere un canale di contatto con l’Autorità Garante della Privacy',
+        ],
+        [
+          'Qual è una delle conseguenze dell’opacità dei sistemi di deep learning?',
+          'Rendere difficile comprendere il processo decisionale e quindi attribuire eventuali errori a soggetti determinati',
+          'Rendere più sicuro il segreto industriale',
+          'Limitare il numero di soggetti responsabili',
+        ],
+        [
+          'Nel campo delle comunicazioni multimediali, l’azione normativa a livello Europeo',
+          'Has gestito un processo di convergenza tra il diritto della telefonia e il diritto dei media radiotelevisivi',
+          'Ha gestito il passaggio da un diritto delle comunicazioni analogiche al diritto delle comunicazioni digitali',
+          'Ha gestito la transizione da un diritto dei media a un diritto della concorrenza',
+        ],
+        [
+          'L’obbligo di trasparenza gestionale, principio cardine della normativa TLC, impone',
+          'Una separazione almeno contabile in caso un singolo operatore sia integrato verticalmente nel mercato',
+          'La piena conformità ai principi della tutela dei diritti dei consumatori',
+          'La pubblicazione su apposito registro di tutte le tipologie contrattuali e relative tariffe',
+        ],
+        [
+          'Le sanzioni pecuniarie comminate dall’AGCOM',
+          'Possono essere di entità particolarmente elevata, in particolare per violazioni degli obblighi di operatori con maggiore forza di mercato',
+          'Sono di entità solitamente inferiore a quelle esigibili dal TAR di competenza',
+          'Sono impugnabili davanti al giudice di pace da parte di tutti gli operatori del settore TLC',
+        ],
+        [
+          'La direttiva autorizzazioni 2002/20/CE',
+          'Prospetta un regime autorizzatorio esclusivamente di tipo ex-post',
+          'Prospetta un regime autorizzatorio esclusivamente di tipo ex-ante',
+          'Rafforza il meccanismo di obbligatorietà di autorizzazione all’interconnessione tra operatori di rete',
+        ],
+        [
+          'Il dividendo digitale (digital dividend)',
+          'è la quota parte dello spettro radio lasciato libero dall’adozione di nuove tecnologie trasmissive',
+          'è la quota parte della popolazione che non ha accesso ai servizi minimi',
+          'è la quota parte del fatturato di una Telco che viene accantonata per gli investimenti',
+        ],
+        [
+          'Nell’ambito dell’Agenda Digitale Europea, l’acronimo DESI corrisponde',
+          'All’indice di digitalizzazione dell’economia e della società',
+          'Al nuovo sistema decentralizzato (e non più a governo centrale EU) dei regolatori nazionali',
+          'All’ultima direttiva quadro europea sulle infrastrutture e servizi di rete',
+        ],
+        [
+          "I primi provvedimenti per l'ammissione dei privati nel sistema radiotelevisivo arrivano negli anni '70 da",
+          'Corte costituzionale',
+          'Corte di giustizia europea',
+          'Corte di cassazione',
+        ],
+        [
+          'Le disposizioni antitrust presenti nella legge Mamm`ı del 1990 prevedevano',
+          'Al massimo 3 concessioni nazionali',
+          'Al massimo 2 concessioni nazionali',
+          'Al massimo 1 concessione nazionale',
+        ],
+        [
+          "La legge Maccanico (249/97) voleva favorire un'unica piattaforma digitale rivolta a",
+          'Alla TV via cavo, alla TV satellitare e alla TV analogica codificata (pay-TV)',
+          'Alla Web TV, alla TV via cavo e alla TV digitale terrestre',
+          'Alla TV digitale terrestre, alla TV satellitare e alla TV via cavo',
+        ],
+        [
+          "Nel 2016 l'aggiornamento SMAV proposto mira a creare condizioni eque",
+          'Secondo una strategia che si integra in quella per lo sviluppo del mercato unico digitale',
+          'Secondo una strategia che si integra in quella per sviluppo delle piattaforme online',
+          'Secondo una strategia che si integra in quella per lo sviluppo dei profili contenutistici',
+        ],
+        [
+          'La normativa inerente la tutela del diritto d’autore ricomprende',
+          'I database, in virtù di una strutturazione creativa dei dati',
+          'Le invenzioni, in virtù di caratteristiche di novità e originalità',
+          'Gli algoritmi, in virtù degli effetti tecnici prodotti',
+        ],
+        [
+          'La normativa inerente alla tutela del diritto d’autore ricomprende (variante)',
+          'le opere dell’ingegno di carattere creativo',
+          'le invenzioni',
+          'il software solo se associabile ad effetti tecnici su dispositivi fisici',
+        ],
+        [
+          'L’opera che risulta più fragile rispetto ai criteri classici di protezione del DdA è',
+          'Un file audio di musica pop in formato mp3',
+          'Un libro cartaceo di spartiti musicali',
+          'Un e-book di ricette di cucina protetto con DRM',
+        ],
+        [
+          'Il regolamento sulla tutela del DdA nelle comunicazioni elettroniche',
+          'è stato fermamente contestato da diversi avvocati ed associazioni di consumatori',
+          'è stato emanato dalla S.I.A.E nel 2014',
+          'è stato emanato dall’AGCOM nel 2016 dopo il fallimento del ministro',
+        ],
+        [
+          'Il brevetto è definibile come',
+          'Un diritto temporaneo di monopolio',
+          'Un diritto esclusivo di vendita relativo all’invenzione descritta',
+          'Un’autorizzazione a produrre e commercializzare un’invenzione',
+        ],
+        [
+          'Un brevetto che coinvolge un software',
+          'Può anche riguardare effetti tecnici non materiali, ovvero legati a modifiche di dati',
+          'Sottintende la contestuale protezione del codice sorgente mediante segreto industriale',
+          'Deve necessariamente comprendere almeno un’interfaccia grafica utente (GUI)',
+        ],
+        [
+          'Uno standard',
+          'è un documento di natura pubblica che tutela il produttore e gli utenti',
+          'Non ha valore giuridico, ma è comunque di natura obbligatoria',
+          'è sempre accessibile gratuitamente in virtù della sua natura pubblica',
+        ],
+        [
+          'L’attività di standardizzazione su iniziativa di imprese private',
+          'è lecita, a patto che sia espressamente condotta per promuovere il progresso tecnico o economico a beneficio dei consumatori',
+          'è lecita, in quanto organizzata secondo principi di democraticità e trasparenza',
+          'Non è lecita in quanto coincide con attività anticoncorrenziali derivanti da un cartello',
+        ],
+        [
+          'Una Intelligenza Artificiale può creare contenuti creativi?',
+          'S`ı, e può nascere il problema di capire chi è in definitiva titolare dei diritti tra programmatore, trainer, utilizzatore, ecc.',
+          'No, una macchina non può essere definita come creativa',
+          'S`ı, ma i diritti sono sempre e solo del programmatore',
+        ],
+        [
+          'La strategia europea del 2002 per il consolidamento del libero mercato TLC prevedeva',
+          'un crescente utilizzo di atti di normazione soft che non introducessero troppi vincoli',
+          'un crescente adattamento normativo per meglio seguire le esigenze degli stati membri',
+          'la progressiva abolizione delle autorità di regolamentazione nazionali',
+        ],
+        [
+          'Nel terzo pacchetto, l’orientamento in tema di neutralità tecnologica',
+          'mira ad abbattere effetti distorsivi dovuti alla dipendenza dalla tipologia di rete',
+          'mira a ridurre il ventaglio di servizi avanzati offerti agli utenti',
+          'mira a consentire agli utenti una migliore fruibilità dei servizi (portabilità numero)',
+        ],
+        [
+          'La direttiva 2014/61/UE mira a',
+          'mira a ridurre gli elevati costi realizzativi di nuove infrastrutture di TLC facilitando la condivisione di infrastrutture fisiche esistenti',
+          'mira a ridurre i vincoli normativi che ostacolano la creazione di soggetti attuatori dei piani BUL',
+          'mira a ridurre gli oneri di Roaming applicati dagli operatori',
+        ],
+        [
+          'La liberalizzazione privata nel settore della radiotelediffusione',
+          'comincia a livello delle singole emittenti locali, sulla base di principi di pluralismo',
+          'comincia a valle delle prime direttive europee in materia',
+          'comincia per i network di emittenti locali (uso efficiente frequenze)',
+        ],
+        [
+          'La normativa inerente la tutela del diritto d’autore NON ricomprende',
+          'gli algoritmi che producono effetti tecnici su dispositivi fisici',
+          'i database in virtù di una strutturazione non creativa dei dati',
+          'i diritti morali oggetto di una normativa specifica',
+        ],
+        [
+          'Dispute internazionali in materia di diritto d’autore: a quale normativa ci si riferisce?',
+          'Accordo TRIPS del WTO',
+          'Convenzione di Ginevra',
+          'Convenzione di Berna',
+        ],
+        [
+          'La c.d. ”link-tax” della direttiva europea 2019/790 riguarda',
+          'l’obbligo di corrispondere un equo compenso agli editori di notizie da parte di fornitori di servizi online che ne utilizzino degli estratti',
+          'un meccanismo di tracciamento dei contenuti per le imposte nei paesi di provenienza',
+          'un meccanismo sanzionatorio per le piattaforme online responsabili dei contenuti ospitati',
+        ],
+        [
+          'La proprietà di interoperabilità',
+          'riguarda l’attitudine di due sistemi a scambiarsi informazioni',
+          'è condizione necessaria nei documenti brevettuali',
+          'viene garantita nel caso di sistemi operativi largamente diffusi',
+        ],
+        [
+          'L’UNINFO',
+          'è un ente di normazione nazionale federato all’UNI',
+          'è un ente di normazione internazionale ICT',
+          'è un ente di normazione comunitario (ex UNICOM)',
+        ],
+        [
+          'Gli enti di standardizzazione rispettano una gerarchia a livello',
+          'territoriale',
+          'amministrativo',
+          'decisionale',
+        ],
+        [
+          "Se non si trova il responsabile di un errore di un'IA:",
+          'Sono previste forme di responsabilità sussidiaria (es. assicurazioni o garanzia produttore)',
+          'Ne risponde comunque il programmatore del sistema di IA',
+          'Ne risponde comunque il produttore del sistema di IA',
+        ],
+        [
+          'Legge 249/97: le licenze di utilizzo delle frequenze terrestri',
+          'vengono assegnate dall’autorità per le garanzie nelle comunicazioni',
+          'sono sostituite da un meccanismo basato su autorizzazione generale',
+          'sono riservate a soggetti privati non titolari di precedenti concessioni',
+        ],
+        [
+          'La pianificazione delle frequenze',
+          'si sviluppa attraverso la predisposizione del piano di ripartizione e del piano di assegnazione',
+          'si divide nelle fasi di piano di ripartizione e aste di concessione',
+          'risponde a criteri di libero mercato mediante lo strumento delle aste',
+        ],
+        [
+          'Il CORECOM',
+          'è un organo funzionale dell’AGCOM che si occupa tipicamente di dirimere le controversie tra utenti e operatori di TLC',
+          'è un organo funzionale cui l’AGCOM delega l’esercizio di alcune funzioni consultive',
+          'è un organo dell’AGCOM con funzioni di raccordo tra le autorità regionali',
+        ],
+        [
+          'Con il pacchetto di direttive comunitarie del 2002 i mercati rilevanti',
+          'sono definiti dalla comunità europea e sottoposti a periodiche revisioni',
+          'non subiscono più uno specifico monitoraggio',
+          'aumentano di numero e vengono elencati nella direttiva quadro',
+        ],
+        [
+          'La c.d. ”direttiva quadro” 2002/21/CE',
+          'rende di fatto inattuabile una regolazione ex-ante in termini di licenze ed autorizzazioni',
+          'stabilisce un piano di assegnazione frequenze comunitario',
+          'fissa criteri comuni al mercato TLC e dei media',
+        ],
+        [
+          'La condizione di operatore notevole forza di mercato',
+          'è legata al superamento di parametri specifici stabiliti dalle direttive',
+          'si raggiunge alla fine di un processo di convergenza',
+          'si verifica al superamento del 50% della quota di mercato',
+        ],
+        [
+          'Il BEREC (Regolamento 1211/2009) è',
+          'l’ufficio europeo per il coordinamento delle autorità nazionali di controllo del mercato delle TLC',
+          'l’ente europeo per il governo del mercato unico delle TLC',
+          'un organismo indipendente complementare alle autorità nazionali',
+        ],
+        [
+          'La realizzazione di reti di nuova generazione in fibra ottica',
+          'è favorita da agevolazioni legate alle installazioni contenute nel d.l. 70/2012',
+          'è soggetta a vincoli di concorrenza del 2012',
+          'è parzialmente normata dal c.d. codice del cablaggio verticale',
+        ],
+        [
+          'L’obbligo del servizio pubblico di dar voce a tutte le opinioni corrisponde al',
+          'pluralismo interno (o par condicio)',
+          'pluralismo esterno (o media convergence)',
+          'palinsesto universale',
+        ],
+        [
+          'Il principio di Net Neutrality prevede che',
+          'le informazioni che viaggiano su una rete non debbano subire rallentamenti rispetto alla tipologia di servizio',
+          'le informazioni possano viaggiare senza problemi di compatibilità su reti eterogenee',
+          'sia possibile cambiare operatore senza penalizzazioni di qualità',
+        ],
+        [
+          'Il principale meccanismo di funzionamento del diritto d’autore è',
+          'il diritto di escludere terzi dall’esercizio di un diritto sull’opera creativa',
+          'il diritto di concedere licenze sull’opera',
+          'il diritto di paternità dell’opera',
+        ],
+        [
+          'La convergenza tecnologica mette in crisi il DdA perché',
+          'in quanto Internet è percepita come piattaforma di contenuti scaricabili gratuitamente',
+          'per la difficoltà di creare DRM interoperabili',
+          'in quanto risulta tecnicamente impossibile tracciare le opere',
+        ],
+        [
+          'Nell’ambito del diritto d’autore (diritti morali)',
+          'i diritti morali sono in modo inalienabile ed inestinguibile legati all’autore dell’opera',
+          'i diritti di sfruttamento dell’opera sono legati in modo inalienabile all’autore',
+          'i diritti morali sono legati a chi possiede il diritto di sfruttamento',
+        ],
+        [
+          'Gli strumenti di Copyleft (Creative Commons)',
+          'possono favorire una rapida diffusione di un’opera',
+          'riducono e spesso annullano il valore economico dell’opera',
+          'comportano la rinuncia all’esercizio di diritti di Copyright',
+        ],
+        [
+          'Quando si parla di effetti di rete si intende',
+          'una sorta di passaparola che coinvolge una enorme quantità di utenti di un servizio a diffusione virale',
+          'un fenomeno che spesso si instaura in mancanza di interoperabilità',
+          'un effetto generato da una lacuna normativa a monte',
+        ],
+        [
+          'Sono enti di standardizzazione europea',
+          'CEN, CENELEC, ETSI',
+          'EURECOM, CEN, EFTA',
+          'EPO, CEN, OSE',
+        ],
+        [
+          'ISO/IEC JTC-1 SC 29 WG 01 rappresenta',
+          'una sigla identificativa di un gruppo di lavoro all’interno di organismi di standardizzazione',
+          'una sigla identificativa di uno standard di compressione di immagini',
+          'la sigla identificativa di una famiglia di standard brevettuali',
+        ],
+        [
+          'Codice TLC: chi riceve le dichiarazioni di inizio attività e verifica ex-post i presupposti?',
+          'è il Ministero di settore',
+          'è l’AGCOM',
+          'è il TAR del Lazio',
+        ],
+        [
+          'Il codice postale del 1973 riserva allo stato',
+          'Realizzazione e gestione infrastrutture, erogazione dei servizi e fornitura agli utenti di apparecchi terminali',
+          'La possibilità di modificare unilateralmente i contratti privati',
+          'L’esclusività nella distribuzione della corrispondenza internazionale',
+        ],
+        [
+          'I limiti ANTITRUST sul numero di concessioni massime di un soggetto sono',
+          'Tre concessioni su massimo 25% delle reti',
+          'Cinque concessioni su massimo 20% delle reti',
+          'Quattro concessioni su massimo 30% delle reti',
+        ],
+        [
+          "In che modo si ottengono i diritti d'autore su un'opera?",
+          'Si acquisisce con la creazione della stessa',
+          'L’autore deve pagare delle royalties',
+          'Si acquisisce dopo averla depositata',
+        ],
+        [
+          "Che cosa tutela in particolare il diritto d'autore?",
+          'Forma interna ed esterna',
+          'Forma interna e contenuti',
+          'Forma esterna e contenuti',
+        ],
+        [
+          'Riguardo al terzo pacchetto del 2009, gli obiettivi sono...',
+          '8',
+          '7',
+          '12',
+        ],
+        [
+          'La direttiva 2014/61/UE mira a (variante)',
+          'facilitare e incoraggiare l’adozione di reti ad alta velocità promuovendo l’utilizzo di infrastrutture esistenti',
+          'facilitare l’adozione di reti di TLC promuovendone la creazione',
+          'stabilire la copertura BUL maggiore di 100Mbps per il 50% dei cittadini',
+        ],
+        [
+          'Infratel Italia S.P.A ha il compito di...',
+          'attuare dei Piani Banda Larga e Ultra Larga',
+          'armonizzare il settore riguardante le infrastrutture di TLC',
+          'aiutare l’AGCOM con le decisioni riguardo il Digital Single Market',
+        ],
+        [
+          'Infratel Italia S.P.A è una società in house...',
+          'del Ministro dello sviluppo economico',
+          'dell’AGCOM',
+          'del Ministro delle Poste e delle telecomunicazioni',
+        ],
+        [
+          'Il piano ”rete unica” prevedeva',
+          'fusione tra FiberCop e Open Fiber',
+          'fusione tra TIM e Open Fiber',
+          'fusione tra AGCOM e TIM per evitare il monopolio',
+        ],
+        [
+          'La sentenza 202/1976 della Corte Costituzionale...',
+          'illegittima la riserva dello stato dell’intero settore della radiotelediffusione a livello locale',
+          'legittima la riserva dello stato dell’intero settore locale',
+          'legittima a livello europeo la riserva della CE della radiotelediffusione',
+        ],
+        [
+          'Capitale sociale minimo per concessionari TV privati nazionali',
+          'maggiore di 3 miliardi di lire',
+          'tra i 500 milioni e i 3 miliardi di lire',
+          'tra 200 milioni e 500 milioni di lire',
+        ],
+        [
+          'Nella sentenza 420/1994 la Corte costituzionale',
+          'essa ha ritenuto che il limite antitrust di 3 reti o max 25% delle frequenze fosse incostituzionale',
+          'essa ha confermato il limite antitrust di 3 reti o max 25% delle frequenze',
+          'ha rivoluzionato il panorama televisivo scardinando il duopolio RAI-Fininvest',
+        ],
+        [
+          'I ruoli di operatore di rete, fornitore di contenuti e fornitore di servizi',
+          'possono essere ricoperti da un medesimo soggetto, ma con clausole a garanzia del pluralismo e della concorrenza',
+          'non possono essere ricoperti da un medesimo soggetto poichè contrario alle normative europee',
+          'vengono aboliti con il Testo Unico della Radiotelevisione (d.lgs. 177/2005)',
+        ],
+        [
+          'Un OGC (Organismo di gestione collettiva)...',
+          'è detenuto o controllato dai propri membri',
+          'è organizzato con fini di lucro',
+          'non è n ́e detenuto n ́e controllato dai titolari dei diritti',
+        ],
+        [
+          'Legge 249/97 e licenze frequenze terrestri (variante)',
+          'vengono assegnate dall’autorità per le garanzie nelle comunicazioni',
+          'sono sostituite da un meccanismo basato su autorizzazione generale',
+          'sono riservate a soggetti privati non titolari di precedenti concessioni',
+        ],
+        [
+          'Codice TLC: le licenze ed autorizzazioni preesistenti...',
+          'rimangono valide fino a naturale scadenza',
+          'cessano di valere e devono essere rinnovate attraverso meccanismi definiti dal Codice',
+          'vengono prorogate di 3 anni',
+        ],
+        [
+          'Scelta fra molteplici fonti informative (disponibilità mezzi tecnici)',
+          'pluralismo esterno',
+          'pluralismo interno',
+          'libero mercato',
+        ],
+        [
+          'La legge n. 223/1990 (c. d. legge Mammì) riguarda:',
+          'Disciplina del sistema radiotelevisivo pubblico e privato',
+          'Disciplina del sistema radiotelevisivo pubblico',
+          'Disciplina del sistema radiotelevisivo privato',
+        ],
+        [
+          'Maccanico (249/97) e piattaforma unica digitale per:',
+          'la TV digitale sia terrestre che satellitare',
+          'la web TV e la la TV digitale terrestre',
+          'la TV via cavo e la TV analogica codificata (pay-TV)',
+        ],
+        [
+          'Testo Unico Radiotelevisione: un operatore di rete può...',
+          'svolgere anche il ruolo di fornitore di contenuti e servizi purché rispetti i limiti antitrust',
+          'Il ministro Gasparri si dimise assieme ad altri 4 ministri',
+          'si da avvio alla sperimentazione del digitale terrestre',
+        ],
+        [
+          'Decreto Romani 2010 e canali differiti:',
+          'i canali differiti (time-shifted) non hanno un ruolo nel computo dei limiti anticoncentrazione',
+          'i servizi televisivi pay-per-view rientrano nella disciplina',
+          'i servizi di streaming (video on-demand) vengono assimilati ai servizi lineari',
+        ],
+        [
+          'Il diritto d’autore è stato originariamente concepito come:',
+          'incentivo allo sviluppo culturale',
+          'incentivo al commercio di libri ed opere d’arte',
+          'strumento per la valorizzazione delle opere dell’ingegno',
+        ],
+        [
+          'Per il diritto d’autore, un’opera collettiva (variante):',
+          'è un’opera formata da più opere',
+          'è un’opera creata da più autori, con apporto paritario',
+          'è una rielaborazione di un’opera da parte di uno o più autori',
+        ],
+        [
+          'Rispondono pienamente ai criteri di brevettabilità:',
+          'soluzioni nuove ed inventive che abbiano applicazioni industriali',
+          'soluzioni nuove che rispondono a problemi concreti',
+          'soluzioni inventive a problemi tecnici',
+        ],
+        [
+          'In un documento brevettuale, le “rivendicazioni”:',
+          'sono sempre poste alla fine del documento brevettuale',
+          'sono sempre poste all’inizio del documento brevettuale, subito dopo il preambolo',
+          'sono le uniche utilizzabili al fine di una ricerca brevettuale affidabile',
+        ],
+        [
+          'La ricerca brevettuale (variante):',
+          'per essere efficace richiede un’accurata scelta e ricerca delle parole chiave',
+          'è economicamente costosa ma necessaria per la verifica di brevettabilità',
+          'si utilizza per valutare l’ambito di protezione ma non quello di validità',
+        ],
+        [
+          'Nel diritto della privacy, il consenso:',
+          'è sempre revocabile',
+          'non è mai revocabile, una volta dato non si può eliminare',
+          'è revocabile, purché non prima di quanto indicato nelle clausole',
+        ],
+        [
+          'Un sistema di Intelligenza Artificiale:',
+          'Può prendere decisioni del tutto simili a quelle di un essere umano per determinati compiti purché allenata con esempi',
+          'Può ragionare esattamente come un umano ma ha difficoltà a spiegare le sue decisioni',
+          'Commette errori sempre del tutto simili a quelli di un essere umano',
+        ],
+        [
+          "L'imprevedibilità insita nelle decisioni di un sistema di IA ha come conseguenza nel diritto:",
+          "La mancanza di certezza nel garantire i risultati che l'utilizzatore del sistema di IA si attende",
+          'La possibilità di revocare scelte sbagliate dell’IA',
+          "L'impossibilità di revocare le scelte sbagliate dell’IA",
+        ],
+      ];
+
+      // Mischia l'array usando l'algoritmo di Fisher-Yates
+      function shuffle(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      const App = () => {
+        const [view, setView] = React.useState('start'); // start, quiz, end
+        const [questions, setQuestions] = React.useState([]);
+        const [currentIdx, setCurrentIdx] = React.useState(0);
+        const [score, setScore] = React.useState(0);
+        const [selected, setSelected] = React.useState(null);
+
+        const startQuiz = () => {
+          const prepared = shuffle(rawData).map((item) => ({
+            question: item[0],
+            correct: item[1],
+            options: shuffle([item[1], item[2], item[3]]),
+          }));
+          setQuestions(prepared);
+          setCurrentIdx(0);
+          setScore(0);
+          setSelected(null);
+          setView('quiz');
+        };
+
+        const handleSelect = (opt) => {
+          if (selected) return;
+          setSelected(opt);
+          if (opt === questions[currentIdx].correct) setScore((s) => s + 1);
+
+          setTimeout(() => {
+            if (currentIdx < questions.length - 1) {
+              setCurrentIdx((prev) => prev + 1);
+              setSelected(null);
+            } else {
+              setView('end');
+            }
+          }, 1200);
+        };
+
+        if (view === 'start')
+          return (
+            <div className="bg-white p-10 rounded-3xl shadow-xl border border-slate-200 text-center">
+              <h1 className="text-4xl font-extrabold text-slate-900 mb-6 tracking-tight">
+                Quiz NRTLC Parte A
+              </h1>
+              <div className="p-6 bg-blue-50 rounded-2xl mb-8 border border-blue-100">
+                <p className="text-blue-800 text-lg leading-relaxed">
+                  Mettiti alla prova con le <strong>115 domande</strong>{' '}
+                  complete.
+                  <br />
+                  Le opzioni e l'ordine delle domande sono generati casualmente
+                  ogni volta.
+                </p>
+              </div>
+              <button
+                onClick={startQuiz}
+                className="bg-slate-900 hover:bg-black text-white px-12 py-5 rounded-2xl font-bold text-xl shadow-lg transition-transform hover:scale-105 active:scale-95"
+              >
+                Comincia ora
+              </button>
+            </div>
+          );
+
+        if (view === 'end')
+          return (
+            <div className="bg-white p-10 rounded-3xl shadow-xl border border-slate-200 text-center">
+              <h2 className="text-3xl font-bold text-slate-900 mb-2">
+                Quiz Concluso!
+              </h2>
+              <div className="text-7xl font-black text-blue-600 my-8">
+                {score} / {questions.length}
+              </div>
+              <div className="text-2xl font-semibold mb-10 text-slate-500">
+                Punteggio:{' '}
+                <span className="text-slate-900">
+                  {((score / questions.length) * 100).toFixed(1)}%
+                </span>
+              </div>
+              <button
+                onClick={startQuiz}
+                className="bg-slate-900 hover:bg-black text-white px-10 py-4 rounded-xl font-bold transition-all"
+              >
+                Ricomincia Quiz
+              </button>
+            </div>
+          );
+
+        const q = questions[currentIdx];
+        const progress = ((currentIdx + 1) / questions.length) * 100;
+
+        return (
+          <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-200">
+            <div className="mb-8">
+              <div className="flex justify-between items-end mb-3">
+                <div>
+                  <span className="text-xs font-black text-blue-600 uppercase tracking-widest block mb-1">
+                    Status
+                  </span>
+                  <span className="text-sm font-bold text-slate-400">
+                    Domanda {currentIdx + 1} di {questions.length}
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs font-black text-emerald-600 uppercase tracking-widest block mb-1">
+                    Corrette
+                  </span>
+                  <span className="text-sm font-bold text-slate-400">
+                    {score}
+                  </span>
+                </div>
+              </div>
+              <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-50">
+                <div
+                  className="h-full bg-blue-600 transition-all duration-500 rounded-full"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+            </div>
+
+            <h2 className="text-2xl font-bold text-slate-800 mb-8 leading-snug min-h-[100px]">
+              {q.question}
+            </h2>
+
+            <div className="grid gap-3">
+              {q.options.map((opt, i) => {
+                let classes =
+                  'w-full text-left p-5 border-2 rounded-2xl font-medium text-lg option-btn ';
+                if (selected) {
+                  if (opt === q.correct)
+                    classes +=
+                      'bg-emerald-50 border-emerald-500 text-emerald-700 shadow-sm';
+                  else if (opt === selected)
+                    classes +=
+                      'bg-red-50 border-red-500 text-red-700 shadow-sm';
+                  else
+                    classes +=
+                      'bg-white border-slate-100 text-slate-300 opacity-50';
+                } else {
+                  classes +=
+                    'bg-white border-slate-200 text-slate-700 hover:border-blue-400 hover:bg-blue-50 cursor-pointer shadow-sm hover:shadow-md';
+                }
+
+                return (
+                  <button
+                    key={i}
+                    onClick={() => handleSelect(opt)}
+                    disabled={!!selected}
+                    className={classes}
+                  >
+                    <div className="flex items-start">
+                      <span className="inline-flex items-center justify-center h-8 w-8 rounded-lg bg-slate-100 text-slate-400 text-xs font-black mr-4 shrink-0 mt-0.5">
+                        {String.fromCharCode(65 + i)}
+                      </span>
+                      <span>{opt}</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
