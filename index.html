@@ -1,601 +1,599 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Simulatore Normative TLC</title>
-    <!-- Caricamento libreria icone Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-      /* ==========================================================================
-           CSS PURO (Stili estratti e ottimizzati)
+        /* ==========================================================================
+           1. VARIABILI E RESET (Dallo stile originale)
            ========================================================================== */
-
-      :root {
-        --bg-main: #f8fafc;
-        --text-main: #1e293b;
-        --text-muted: #64748b;
-        --border-color: #e2e8f0;
-        --primary: #4f46e5;
-        --primary-hover: #4338ca;
-        --primary-light: #e0e7ff;
-        --success-bg: #f0fdf4;
-        --success-border: #22c55e;
-        --success-text: #14532d;
-        --error-bg: #fef2f2;
-        --error-border: #ef4444;
-        --error-text: #7f1d1d;
-      }
-
-      body {
-        margin: 0;
-        font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
-        background-color: var(--bg-main);
-        color: var(--text-main);
-      }
-
-      .hidden {
-        display: none !important;
-      }
-
-      .app-container {
-        min-height: 100vh;
-        padding: 2.5rem 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .justify-center {
-        justify-content: center;
-      }
-
-      .content-wrapper {
-        width: 100%;
-        max-width: 48rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-      }
-
-      .card {
-        background-color: #ffffff;
-        border-radius: 1rem;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-        border: 1px solid var(--border-color);
-        padding: 2rem;
-      }
-
-      .card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem 1.5rem;
-      }
-      /* Tipografia */
-
-      .text-center {
-        text-align: center;
-      }
-
-      .text-left {
-        text-align: left;
-      }
-
-      .text-right {
-        text-align: right;
-      }
-
-      .text-5xl {
-        font-size: 3rem;
-        line-height: 1;
-        font-weight: 800;
-      }
-
-      .text-3xl {
-        font-size: 1.875rem;
-        line-height: 2.25rem;
-        font-weight: 700;
-      }
-
-      .text-xl {
-        font-size: 1.25rem;
-        line-height: 1.75rem;
-        font-weight: 600;
-      }
-
-      .text-lg {
-        font-size: 1.125rem;
-        line-height: 1.75rem;
-      }
-
-      .text-sm {
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-      }
-
-      .text-xs {
-        font-size: 0.75rem;
-        line-height: 1rem;
-      }
-
-      .font-semibold {
-        font-weight: 600;
-      }
-
-      .font-medium {
-        font-weight: 500;
-      }
-
-      .font-bold {
-        font-weight: 700;
-      }
-
-      .text-muted {
-        color: var(--text-muted);
-      }
-
-      .text-primary {
-        color: var(--primary);
-      }
-
-      .text-success {
-        color: var(--success-border);
-      }
-
-      .text-error {
-        color: var(--error-border);
-      }
-
-      .uppercase {
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      /* Margini e Padding */
-
-      .mb-2 {
-        margin-bottom: 0.5rem;
-      }
-
-      .mb-4 {
-        margin-bottom: 1rem;
-      }
-
-      .mb-6 {
-        margin-bottom: 1.5rem;
-      }
-
-      .mb-8 {
-        margin-bottom: 2rem;
-      }
-
-      .mr-2 {
-        margin-right: 0.5rem;
-      }
-
-      .mr-3 {
-        margin-right: 0.75rem;
-      }
-
-      .ml-2 {
-        margin-left: 0.5rem;
-      }
-
-      .mt-2 {
-        margin-top: 0.5rem;
-      }
-
-      .mx-auto {
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .pt-4 {
-        padding-top: 1rem;
-      }
-
-      .py-4 {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-      }
-
-      .border-y {
-        border-top: 1px solid var(--border-color);
-        border-bottom: 1px solid var(--border-color);
-      }
-      /* Layout utility */
-
-      .flex {
-        display: flex;
-      }
-
-      .flex-col {
-        flex-direction: column;
-      }
-
-      .items-center {
-        align-items: center;
-      }
-
-      .items-start {
-        align-items: flex-start;
-      }
-
-      .justify-between {
-        justify-content: space-between;
-      }
-
-      .gap-4 {
-        gap: 1rem;
-      }
-
-      .w-full {
-        width: 100%;
-      }
-
-      .max-w-xs {
-        max-width: 20rem;
-      }
-
-      .flex-1 {
-        flex: 1;
-      }
-
-      .flex-2 {
-        flex: 2;
-      }
-      /* Icone */
-
-      .icon-md {
-        width: 1.25rem;
-        height: 1.25rem;
-      }
-
-      .icon-lg {
-        width: 1.5rem;
-        height: 1.5rem;
-        flex-shrink: 0;
-      }
-
-      .icon-xl {
-        width: 4rem;
-        height: 4rem;
-      }
-
-      .icon-xxl {
-        width: 5rem;
-        height: 5rem;
-      }
-      /* Input Select */
-
-      .form-group label {
-        display: block;
-        font-size: 0.875rem;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-      }
-
-      .select-input {
-        width: 100%;
-        background-color: var(--bg-main);
-        border: 1px solid #cbd5e1;
-        border-radius: 0.5rem;
-        padding: 0.75rem;
-        font-size: 1rem;
-        outline: none;
-      }
-
-      .select-input:focus {
-        border-color: var(--primary);
-      }
-      /* Pulsanti */
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.75rem;
-        font-weight: 600;
-        cursor: pointer;
-        border: none;
-        transition: all 0.2s;
-      }
-
-      .btn-primary {
-        background-color: var(--primary);
-        color: white;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      }
-
-      .btn-primary:hover:not(:disabled) {
-        background-color: var(--primary-hover);
-      }
-
-      .btn-primary:disabled {
-        background-color: #cbd5e1;
-        cursor: not-allowed;
-        box-shadow: none;
-      }
-
-      .btn-secondary {
-        background-color: #1e293b;
-        color: white;
-      }
-
-      .btn-secondary:hover {
-        background-color: #0f172a;
-      }
-
-      .btn-ghost {
-        background-color: transparent;
-        color: var(--text-muted);
-      }
-
-      .btn-ghost:hover {
-        background-color: var(--border-color);
-        color: var(--text-main);
-      }
-
-      .btn-light {
-        background-color: #f1f5f9;
-        color: var(--text-main);
-      }
-
-      .btn-light:hover {
-        background-color: #e2e8f0;
-      }
-      /* Barra di Progresso */
-
-      .progress-bar-bg {
-        width: 100%;
-        background-color: var(--border-color);
-        height: 0.5rem;
-        border-radius: 9999px;
-        overflow: hidden;
-      }
-
-      .progress-bar-fill {
-        background-color: var(--primary);
-        height: 100%;
-        transition: width 0.5s ease-in-out;
-      }
-      /* Opzioni Quiz */
-
-      .question-text {
-        font-size: 1.25rem;
-        font-weight: 500;
-        line-height: 1.6;
-        margin-bottom: 2rem;
-        margin-top: 0;
-      }
-
-      .options-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .option-btn {
-        width: 100%;
-        text-align: left;
-        padding: 1rem;
-        border-radius: 0.75rem;
-        border: 2px solid var(--border-color);
-        background-color: white;
-        cursor: pointer;
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        font-size: 1.125rem;
-        line-height: 1.4;
-        transition: all 0.2s;
-      }
-
-      .option-btn:hover:not(:disabled) {
-        border-color: #a5b4fc;
-        background-color: var(--bg-main);
-      }
-
-      .option-btn.selected {
-        border-color: var(--primary);
-        background-color: var(--primary-light);
-        color: #312e81;
-      }
-
-      .option-btn.correct {
-        border-color: var(--success-border);
-        background-color: var(--success-bg);
-        color: var(--success-text);
-      }
-
-      .option-btn.wrong {
-        border-color: var(--error-border);
-        background-color: var(--error-bg);
-        color: var(--error-text);
-      }
-
-      .option-btn.disabled-neutral {
-        border-color: #f1f5f9;
-        background-color: white;
-        color: #94a3b8;
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-      /* Storico */
-
-      .history-list {
-        max-height: 24rem;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        padding-right: 0.5rem;
-      }
-
-      .history-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
-        background-color: var(--bg-main);
-        border: 1px solid #f1f5f9;
-        border-radius: 0.75rem;
-      }
+        
+         :root {
+            --bg-main: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #e0e7ff;
+            --success-bg: #f0fdf4;
+            --success-border: #22c55e;
+            --success-text: #14532d;
+            --error-bg: #fef2f2;
+            --error-border: #ef4444;
+            --error-text: #7f1d1d;
+            /* Gestione Safe Area per mobile moderni */
+            --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            /* Rimuove il flash al tap su mobile */
+        }
+        
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            /* IMPORTANTE: Blocca lo scroll della pagina intera */
+            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+        }
+        /* ==========================================================================
+           2. STRUTTURA LAYOUT "APP-LIKE" (Concetto adattivo)
+           ========================================================================== */
+        
+        #app {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            /* Margini laterali automatici su desktop (max-width 48rem come originale) */
+            max-width: 48rem;
+            margin: 0 auto;
+            position: relative;
+            background-color: var(--bg-main);
+        }
+        /* Aggiunge un'ombra e stacca l'app dallo sfondo su schermi grandi */
+        
+        @media (min-width: 48rem) {
+            body {
+                background-color: #e2e8f0;
+                /* Colore di sfondo esterno più scuro */
+                padding: 2rem 0;
+                /* Spazio sopra e sotto l'app */
+            }
+            #app {
+                height: calc(100% - 4rem);
+                border-radius: 1rem;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                overflow: hidden;
+                /* Mantiene i bordi arrotondati */
+            }
+        }
+        /* Definizione delle viste */
+        
+        .view {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 1;
+            transition: opacity 0.2s ease-in-out;
+            padding: 1rem;
+            /* Padding base mobile */
+        }
+        
+        @media (min-width: 48rem) {
+            .view {
+                padding: 2rem;
+                /* Padding aumentato desktop */
+            }
+        }
+        
+        .hidden {
+            display: none !important;
+            opacity: 0;
+        }
+        /* Area centrale scrollabile internamente */
+        
+        .scroll-content {
+            flex: 1;
+            overflow-y: auto;
+            /* Permette lo scroll solo qui */
+            -webkit-overflow-scrolling: touch;
+            /* Scroll fluido su iOS */
+            padding-right: 5px;
+            /* Spazio per la scrollbar */
+        }
+        /* Nasconde la scrollbar per un look più pulito (opzionale) */
+        
+        .scroll-content::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        .scroll-content::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 99px;
+        }
+        /* Barra delle azioni inferiore fissa */
+        
+        .action-bar {
+            flex-shrink: 0;
+            /* Non si restringe */
+            padding: 1rem 0;
+            background-color: var(--bg-main);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* Gestione safe area su iPhone recenti */
+            padding-bottom: calc(1rem + var(--safe-area-inset-bottom));
+        }
+        /* ==========================================================================
+           3. STILI GRAFICI RIPRISTINATI (Dallo stile originale)
+           ========================================================================== */
+        /* Card */
+        
+        .card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-header-app {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+        /* Tipografia */
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-3xl {
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+            font-weight: 700;
+            margin-top: 0;
+        }
+        
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            font-weight: 600;
+        }
+        
+        .text-5xl {
+            font-size: 3rem;
+            line-height: 1;
+            font-weight: 800;
+        }
+        
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+        
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+        
+        .text-xs {
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+        
+        .font-semibold {
+            font-weight: 600;
+        }
+        
+        .font-bold {
+            font-weight: 700;
+        }
+        
+        .text-muted {
+            color: var(--text-muted);
+        }
+        
+        .text-primary {
+            color: var(--primary);
+        }
+        
+        .uppercase {
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        /* Margini */
+        
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+        
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+        
+        .mr-2 {
+            margin-right: 0.5rem;
+        }
+        
+        .mt-2 {
+            margin-top: 0.5rem;
+        }
+        
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Icone */
+        
+        .icon-md {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        
+        .icon-lg {
+            width: 1.5rem;
+            height: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .icon-xl {
+            width: 4rem;
+            height: 4rem;
+        }
+        
+        .icon-xxl {
+            width: 5rem;
+            height: 5rem;
+        }
+        /* Input Select */
+        
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-align: left;
+        }
+        
+        .select-input {
+            width: 100%;
+            background-color: var(--bg-main);
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-size: 1rem;
+            outline: none;
+        }
+        /* Pulsanti base */
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-primary:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background-color: #1e293b;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #0f172a;
+        }
+        
+        .btn-ghost {
+            background-color: transparent;
+            color: var(--text-muted);
+            padding: 0.75rem 1rem;
+        }
+        
+        .btn-ghost:hover {
+            background-color: var(--border-color);
+            color: var(--text-main);
+        }
+        
+        .btn-light {
+            background-color: #f1f5f9;
+            color: var(--text-main);
+        }
+        
+        .btn-light:hover {
+            background-color: #e2e8f0;
+        }
+        /* Barra di Progresso */
+        
+        .progress-bar-container {
+            flex-shrink: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar-bg {
+            width: 100%;
+            background-color: var(--border-color);
+            height: 0.5rem;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            background-color: var(--primary);
+            height: 100%;
+            transition: width 0.3s ease-out;
+            width: 0%;
+        }
+        /* Opzioni Quiz */
+        
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 500;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            margin-top: 0;
+        }
+        
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 2px solid var(--border-color);
+            background-color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            font-size: 1.125rem;
+            line-height: 1.4;
+            transition: all 0.2s;
+            color: var(--text-main);
+        }
+        
+        .option-btn:hover:not(:disabled) {
+            border-color: #a5b4fc;
+            background-color: var(--bg-main);
+        }
+        
+        .option-btn.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            color: #312e81;
+        }
+        
+        .option-btn.correct {
+            border-color: var(--success-border);
+            background-color: var(--success-bg);
+            color: var(--success-text);
+        }
+        
+        .option-btn.wrong {
+            border-color: var(--error-border);
+            background-color: var(--error-bg);
+            color: var(--error-text);
+        }
+        
+        .option-btn.disabled-neutral {
+            border-color: #f1f5f9;
+            background-color: white;
+            color: #94a3b8;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        /* Storico */
+        
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--bg-main);
+            border: 1px solid #f1f5f9;
+            border-radius: 0.75rem;
+        }
+        /* Utility layout per la action bar */
+        
+        .flex-1 {
+            flex: 1;
+        }
+        
+        .flex-2 {
+            flex: 2;
+        }
+        
+        .gap-4 {
+            gap: 1rem;
+        }
+        
+        .w-full {
+            width: 100%;
+        }
+        
+        .max-w-xs {
+            max-width: 20rem;
+        }
+        
+        .border-y {
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .py-4 {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
     </style>
-  </head>
+</head>
 
-  <body>
+<body>
+
     <div id="app">
-      <!-- ==================================================================
-             VISTA HOME
-             ================================================================== -->
-      <div id="view-home" class="app-container">
-        <div class="content-wrapper">
-          <div class="card text-center">
-            <i
-              data-lucide="trophy"
-              class="icon-xl mx-auto text-primary mb-4"
-            ></i>
-            <h1 class="text-3xl font-bold mb-2">Simulatore Normative TLC</h1>
-            <p class="text-muted mb-8">
-              Testa le tue conoscenze. Risposta corretta: +1 | Risposta errata:
-              -0.25
-            </p>
+        <div id="view-home" class="view">
+            <div class="scroll-content text-center">
+                <div class="card">
+                    <i data-lucide="trophy" class="icon-xl mx-auto text-primary mb-4"></i>
+                    <h1 class="text-3xl mb-2">Simulatore Normative TLC</h1>
+                    <p class="text-muted mb-8">Testa le tue conoscenze. Risposta corretta: +1 | Risposta errata: -0.25</p>
 
-            <div class="form-group max-w-xs mx-auto mb-8 text-left">
-              <label>Numero di domande</label>
-              <select id="num-questions" class="select-input">
-                <option value="20">20 Domande</option>
-                <option value="30">30 Domande</option>
-                <option value="40">40 Domande</option>
-                <option value="all" id="opt-all">Tutte</option>
-              </select>
-            </div>
+                    <div class="form-group max-w-xs mx-auto mb-8">
+                        <label>Numero di domande</label>
+                        <select id="num-questions" class="select-input">
+                            <option value="20">20 Domande</option>
+                            <option value="30">30 Domande</option>
+                            <option value="all" id="opt-all">Tutte</option>
+                        </select>
+                    </div>
 
-            <button
-              onclick="startQuiz()"
-              class="btn btn-primary w-full max-w-xs"
-            >
-              <i data-lucide="play" class="icon-md mr-2"></i>
-              Avvia Nuova Simulazione
-            </button>
-          </div>
+                    <button onclick="startQuiz()" class="btn btn-primary w-full max-w-xs">
+                        <i data-lucide="play" class="icon-md mr-2"></i>
+                        Avvia Nuova Simulazione
+                    </button>
+                </div>
 
-          <div id="history-card" class="card hidden">
-            <div class="flex items-center mb-6">
-              <i data-lucide="clock" class="icon-lg text-primary mr-3"></i>
-              <h2 class="text-xl font-bold">Storico Simulazioni</h2>
+                <div id="history-card" class="card hidden text-left">
+                    <div class="flex items-center mb-6" style="display: flex;">
+                        <i data-lucide="clock" class="icon-lg text-primary mr-3" style="margin-right: 0.75rem;"></i>
+                        <h2 class="text-xl font-bold" style="margin: 0;">Storico Simulazioni</h2>
+                    </div>
+                    <div id="history-list" class="history-list">
+                    </div>
+                </div>
             </div>
-            <div id="history-list" class="history-list">
-              <!-- Lo storico verrà iniettato qui tramite JS -->
-            </div>
-          </div>
         </div>
-      </div>
 
-      <!-- ==================================================================
-             VISTA QUIZ
-             ================================================================== -->
-      <div id="view-quiz" class="app-container hidden">
-        <div class="content-wrapper">
-          <!-- Header Progress -->
-          <div class="card card-header">
-            <div>
-              <p
-                id="quiz-progress-text"
-                class="text-sm font-semibold text-primary uppercase"
-              ></p>
-              <p id="quiz-id-text" class="text-xs text-muted mt-2"></p>
+        <div id="view-quiz" class="view hidden">
+            <div class="card-header-app">
+                <div>
+                    <p id="quiz-progress-text" class="text-sm font-semibold text-primary uppercase" style="margin: 0;"></p>
+                    <p id="quiz-id-text" class="text-xs text-muted mt-2" style="margin: 0.5rem 0 0 0;"></p>
+                </div>
+                <div style="text-align: right;">
+                    <p class="text-sm font-medium" style="margin: 0;">Punteggio</p>
+                    <p id="quiz-score" class="text-xl font-bold text-primary" style="margin: 0;">0</p>
+                </div>
             </div>
-            <div class="text-right">
-              <p class="text-sm font-medium">Punteggio</p>
-              <p id="quiz-score" class="text-xl font-bold text-primary">0</p>
+
+            <div class="progress-bar-container">
+                <div class="progress-bar-bg">
+                    <div id="quiz-progress-bar" class="progress-bar-fill"></div>
+                </div>
             </div>
-          </div>
 
-          <!-- Progress Bar -->
-          <div class="progress-bar-bg">
-            <div
-              id="quiz-progress-bar"
-              class="progress-bar-fill"
-              style="width: 0%"
-            ></div>
-          </div>
-
-          <!-- Question Area -->
-          <div class="card">
-            <h2 id="question-text" class="question-text"></h2>
-            <div id="options-grid" class="options-grid">
-              <!-- Opzioni generate tramite JS -->
+            <div class="scroll-content">
+                <div class="card">
+                    <h2 id="question-text" class="question-text"></h2>
+                    <div id="options-grid" class="options-grid">
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <!-- Controls Area -->
-          <div class="flex justify-between items-center pt-4">
-            <button onclick="goToHome()" class="btn btn-ghost">
-              <i data-lucide="home" class="icon-md mr-2"></i> Abbandona
-            </button>
+            <div class="action-bar">
+                <button onclick="goToHome()" class="btn btn-ghost">
+                    <i data-lucide="home" class="icon-md mr-2"></i> Abbandona
+                </button>
 
-            <button
-              id="btn-submit"
-              onclick="handleSubmit()"
-              class="btn btn-primary"
-              disabled
-            >
-              Conferma Risposta
-            </button>
+                <button id="btn-submit" onclick="handleSubmit()" class="btn btn-primary" disabled>
+                    Conferma Risposta
+                </button>
 
-            <button
-              id="btn-next"
-              onclick="handleNext()"
-              class="btn btn-secondary hidden"
-            >
-              <span id="btn-next-text">Prossima Domanda</span>
-              <i data-lucide="arrow-right" class="icon-md ml-2"></i>
-            </button>
-          </div>
+                <button id="btn-next" onclick="handleNext()" class="btn btn-secondary hidden">
+                    <span id="btn-next-text">Prossima Domanda</span>
+                    <i data-lucide="arrow-right" class="icon-md ml-2"></i>
+                </button>
+            </div>
         </div>
-      </div>
 
-      <!-- ==================================================================
-             VISTA RISULTATO
-             ================================================================== -->
-      <div id="view-result" class="app-container justify-center hidden">
-        <div class="card text-center w-full" style="max-width: 32rem">
-          <i
-            data-lucide="trophy"
-            class="icon-xxl mx-auto text-primary mb-4"
-          ></i>
-          <h1 class="text-3xl font-bold mb-6">Simulazione Completata</h1>
-          <div class="py-4 border-y mb-6">
-            <p id="result-percentage" class="text-5xl text-primary font-bold">
-              0%
-            </p>
-            <p id="result-score-text" class="text-lg text-muted mt-2"></p>
-          </div>
-          <div class="flex gap-4">
-            <button onclick="goToHome()" class="btn btn-light flex-1">
-              <i data-lucide="home" class="icon-md mr-2"></i> Home
-            </button>
-            <button onclick="startQuiz()" class="btn btn-primary flex-2 w-full">
-              <i data-lucide="rotate-ccw" class="icon-md mr-2"></i> Riavvia Test
-            </button>
-          </div>
+        <div id="view-result" class="view hidden" style="justify-content: center; align-items: center;">
+            <div class="card text-center w-full" style="max-width: 32rem; margin-bottom: 0;">
+                <i data-lucide="trophy" class="icon-xxl mx-auto text-primary mb-4"></i>
+                <h1 class="text-3xl font-bold mb-6">Simulazione Completata</h1>
+                <div class="py-4 border-y mb-6">
+                    <p id="result-percentage" class="text-5xl text-primary font-bold">0%</p>
+                    <p id="result-score-text" class="text-lg text-muted mt-2"></p>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button onclick="goToHome()" class="btn btn-light flex-1">
+                        <i data-lucide="home" class="icon-md mr-2"></i> Home
+                    </button>
+                    <button onclick="startQuiz()" class="btn btn-primary flex-2">
+                        <i data-lucide="rotate-ccw" class="icon-md mr-2"></i> Riavvia Test
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <!-- ======================================================================
-         LOGICA JAVASCRIPT VANILLA
-         ====================================================================== -->
     <script>
-      // Inizializza le icone al caricamento della pagina
-      lucide.createIcons();
-
-      // 1. DATI GREZZI E MAPPATURE
-      const rawData = `
+        // Inizializza le icone al caricamento della pagina
+        lucide.createIcons();
+        // 1. DATI GREZZI E MAPPATURE
+        const rawData = `
 1. Tra i principi costituzionali che originariamente ispirarono i servizi di telefonia è ricompreso
 A. Art. 15: La libertà e la segretezza della corrispondenza e di ogni altra forma di comunicazione sono inviolabili
 B. Art. 21: Tutti hanno diritto di manifestare liberamente il proprio pensiero con la parola, lo scritto e ogni altro mezzo di diffusione.
@@ -1196,396 +1194,393 @@ C. L'impossibilità di revocare le scelte sbagliate dell’IA",
 
 `;
 
-      const solutionsMap = {
-        1: 'A',
-        2: 'A',
-        3: 'B',
-        4: 'B',
-        5: 'B',
-        6: 'C',
-        7: 'B',
-        8: 'B',
-        9: 'C',
-        10: 'A',
-        11: 'B',
-        12: 'A',
-        13: 'A',
-        14: 'C',
-        15: 'B',
-        16: 'B',
-        17: 'A',
-        18: 'C',
-        19: 'A',
-        20: 'A',
-        21: 'A',
-        22: 'A',
-        23: 'C',
-        24: 'B',
-        25: 'A',
-        26: 'B',
-        27: 'B',
-        28: 'A',
-        29: 'C',
-        30: 'A',
-        31: 'A',
-        32: 'C',
-        33: 'B',
-        34: 'A',
-        35: 'A',
-        36: 'A',
-        37: 'B',
-        38: 'C',
-        39: 'B',
-        40: 'C',
-        41: 'A',
-        42: 'B',
-        43: 'B',
-        44: 'C',
-        45: 'B',
-        46: 'A',
-        47: 'A',
-        48: 'A',
-        49: 'C',
-        50: 'C',
-        51: 'B',
-        52: 'A',
-        53: 'A',
-        54: 'C',
-        55: 'B',
-        56: 'C',
-        57: 'B',
-        58: 'A',
-        59: 'A',
-        60: 'B',
-        61: 'A',
-        62: 'A',
-        63: 'C',
-        64: 'C',
-        65: 'B',
-        66: 'A',
-        67: 'A',
-        68: 'A',
-        69: 'C',
-        70: 'A',
-        71: 'C',
-        72: 'B',
-        73: 'B',
-        74: 'B',
-        75: 'C',
-        76: 'C',
-        77: 'B',
-        78: 'A',
-        79: 'A',
-        80: 'A',
-        81: 'C',
-        82: 'B',
-        83: 'A',
-        84: 'B',
-        85: 'A',
-        86: 'A',
-        87: 'C',
-        88: 'B',
-        89: 'B',
-        90: 'A',
-        91: 'B',
-        92: 'C',
-        93: 'B',
-        94: 'C',
-        95: 'A',
-        96: 'C',
-        97: 'B',
-        98: 'B',
-        99: 'A',
-        100: 'B',
-        101: 'A',
-        102: 'C',
-        103: 'A',
-        104: 'A',
-        105: 'A',
-        106: 'A',
-        107: 'C',
-        108: 'A',
-        109: 'A',
-        110: 'A',
-        111: 'A',
-        112: 'A',
-        113: 'A',
-        114: 'A',
-        115: 'A',
-        116: 'A',
-        117: 'A',
-      };
+        const solutionsMap = {
+            1: 'A',
+            2: 'A',
+            3: 'B',
+            4: 'B',
+            5: 'B',
+            6: 'C',
+            7: 'B',
+            8: 'B',
+            9: 'C',
+            10: 'A',
+            11: 'B',
+            12: 'A',
+            13: 'A',
+            14: 'C',
+            15: 'B',
+            16: 'B',
+            17: 'A',
+            18: 'C',
+            19: 'A',
+            20: 'A',
+            21: 'A',
+            22: 'A',
+            23: 'C',
+            24: 'B',
+            25: 'A',
+            26: 'B',
+            27: 'B',
+            28: 'A',
+            29: 'C',
+            30: 'A',
+            31: 'A',
+            32: 'C',
+            33: 'B',
+            34: 'A',
+            35: 'A',
+            36: 'A',
+            37: 'B',
+            38: 'C',
+            39: 'B',
+            40: 'C',
+            41: 'A',
+            42: 'B',
+            43: 'B',
+            44: 'C',
+            45: 'B',
+            46: 'A',
+            47: 'A',
+            48: 'A',
+            49: 'C',
+            50: 'C',
+            51: 'B',
+            52: 'A',
+            53: 'A',
+            54: 'C',
+            55: 'B',
+            56: 'C',
+            57: 'B',
+            58: 'A',
+            59: 'A',
+            60: 'B',
+            61: 'A',
+            62: 'A',
+            63: 'C',
+            64: 'C',
+            65: 'B',
+            66: 'A',
+            67: 'A',
+            68: 'A',
+            69: 'C',
+            70: 'A',
+            71: 'C',
+            72: 'B',
+            73: 'B',
+            74: 'B',
+            75: 'C',
+            76: 'C',
+            77: 'B',
+            78: 'A',
+            79: 'A',
+            80: 'A',
+            81: 'C',
+            82: 'B',
+            83: 'A',
+            84: 'B',
+            85: 'A',
+            86: 'A',
+            87: 'C',
+            88: 'B',
+            89: 'B',
+            90: 'A',
+            91: 'B',
+            92: 'C',
+            93: 'B',
+            94: 'C',
+            95: 'A',
+            96: 'C',
+            97: 'B',
+            98: 'B',
+            99: 'A',
+            100: 'B',
+            101: 'A',
+            102: 'C',
+            103: 'A',
+            104: 'A',
+            105: 'A',
+            106: 'A',
+            107: 'C',
+            108: 'A',
+            109: 'A',
+            110: 'A',
+            111: 'A',
+            112: 'A',
+            113: 'A',
+            114: 'A',
+            115: 'A',
+            116: 'A',
+            117: 'A'
+        };
+        // 2. STATO DELL'APPLICAZIONE
+        let state = {
+            questions: [],
+            currentIndex: 0,
+            selectedOption: null,
+            isSubmitted: false,
+            score: 0,
+            history: []
+        };
 
-      // 2. STATO DELL'APPLICAZIONE
-      let state = {
-        questions: [],
-        currentIndex: 0,
-        selectedOption: null,
-        isSubmitted: false,
-        score: 0,
-        history: [],
-      };
-
-      // 3. FUNZIONI DI UTILITÀ
-      function shuffleArray(array) {
-        const newArr = [...array];
-        for (let i = newArr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+        // 3. FUNZIONI DI UTILITÀ
+        function shuffleArray(array) {
+            const newArr = [...array];
+            for (let i = newArr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+            }
+            return newArr;
         }
-        return newArr;
-      }
 
-      function parseQuestions() {
-        const parsed = [];
-        const blocks = rawData
-          .split(/(?=\n\d+\.\s)/)
-          .filter((b) => b.trim().length > 0);
+        function parseQuestions() {
+            const parsed = [];
+            // Regex migliorata per gestire le varianti finali con virgolette singole e virgole
+            const blocks = rawData.split(/(?=\n\d+\.\s)/).filter(b => b.trim().length > 0);
 
-        for (let block of blocks) {
-          const match = block.match(
-            /^\s*(\d+)\.\s+([\s\S]*?)\s+A\.\s+([\s\S]*?)\s+B\.\s+([\s\S]*?)\s+C\.\s+([\s\S]*?)\s*$/
-          );
-          if (match) {
-            const id = parseInt(match[1]);
-            const correctLetter = solutionsMap[id];
+            for (let block of blocks) {
+                // Rimuove eventuali apici singoli e virgole finali sporche dal blocco testo
+                const cleanBlock = block.replace(/',$/gm, "").replace(/'$/gm, "");
 
-            const options = [
-              {
-                letter: 'A',
-                text: match[3].trim(),
-                isCorrect: correctLetter === 'A',
-              },
-              {
-                letter: 'B',
-                text: match[4].trim(),
-                isCorrect: correctLetter === 'B',
-              },
-              {
-                letter: 'C',
-                text: match[5].trim(),
-                isCorrect: correctLetter === 'C',
-              },
-            ];
+                const match = cleanBlock.match(/^\s*(\d+)\.\s+([\s\S]*?)\s+A\.\s+([\s\S]*?)\s+B\.\s+([\s\S]*?)\s+C\.\s+([\s\S]*?)\s*$/);
 
-            parsed.push({
-              id: id,
-              questionText: match[2].trim(),
-              options: options,
+                if (match) {
+                    const id = parseInt(match[1]);
+                    const correctLetter = solutionsMap[id];
+
+                    if (!correctLetter) continue; // Salta se non c'è soluzione mappata
+
+                    const options = [{
+                        letter: 'A',
+                        text: match[3].trim(),
+                        isCorrect: correctLetter === 'A'
+                    }, {
+                        letter: 'B',
+                        text: match[4].trim(),
+                        isCorrect: correctLetter === 'B'
+                    }, {
+                        letter: 'C',
+                        text: match[5].trim(),
+                        isCorrect: correctLetter === 'C'
+                    }];
+
+                    parsed.push({
+                        id: id,
+                        questionText: match[2].trim(),
+                        options: options
+                    });
+                }
+            }
+            return parsed;
+        }
+
+        // 4. INIZIALIZZAZIONE
+        window.onload = () => {
+            const savedHistory = localStorage.getItem('quiz_history_v2'); // Nuova versione storage
+            if (savedHistory) {
+                state.history = JSON.parse(savedHistory);
+            }
+
+            // Imposta l'etichetta del select "Tutte" col numero esatto
+            const allQuestionsCount = parseQuestions().length;
+            const optAll = document.getElementById('opt-all');
+            if (optAll) optAll.innerText = `Tutte (${allQuestionsCount} Domande)`;
+
+            renderHistory();
+        };
+
+        // 5. GESTIONE VISTE (ROUTING VANILLA MODIFICATO)
+        function switchView(viewId) {
+            // Nasconde tutte le viste
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.add('hidden');
             });
-          }
-        }
-        return parsed;
-      }
-
-      // 4. INIZIALIZZAZIONE
-      window.onload = () => {
-        const savedHistory = localStorage.getItem('quiz_history');
-        if (savedHistory) {
-          state.history = JSON.parse(savedHistory);
+            // Mostra la vista selezionata
+            document.getElementById(viewId).classList.remove('hidden');
+            // Re-inizializza icone Lucide
+            lucide.createIcons();
         }
 
-        // Imposta l'etichetta del select "Tutte" col numero esatto
-        const allQuestionsCount = parseQuestions().length;
-        document.getElementById(
-          'opt-all'
-        ).innerText = `Tutte (${allQuestionsCount} Domande)`;
-
-        renderHistory();
-      };
-
-      // 5. GESTIONE VISTE (ROUTING VANILLA)
-      function switchView(viewId) {
-        document.getElementById('view-home').classList.add('hidden');
-        document.getElementById('view-quiz').classList.add('hidden');
-        document.getElementById('view-result').classList.add('hidden');
-        document.getElementById(viewId).classList.remove('hidden');
-      }
-
-      function goToHome() {
-        renderHistory();
-        switchView('view-home');
-      }
-
-      function renderHistory() {
-        const historyCard = document.getElementById('history-card');
-        const historyList = document.getElementById('history-list');
-
-        if (state.history.length === 0) {
-          historyCard.classList.add('hidden');
-          return;
+        function goToHome() {
+            renderHistory();
+            switchView('view-home');
         }
 
-        historyCard.classList.remove('hidden');
-        historyList.innerHTML = state.history
-          .map(
-            (record) => `
+        function renderHistory() {
+            const historyCard = document.getElementById('history-card');
+            const historyList = document.getElementById('history-list');
+
+            if (!state.history || state.history.length === 0) {
+                historyCard.classList.add('hidden');
+                return;
+            }
+
+            historyCard.classList.remove('hidden');
+            historyList.innerHTML = state.history.map(record => `
                 <div class="history-item">
                     <div>
-                        <p class="font-semibold">${record.percentage}% di precisione</p>
-                        <p class="text-sm text-muted">${record.date}</p>
+                        <p class="font-semibold" style="margin: 0;">${record.percentage}% di precisione</p>
+                        <p class="text-sm text-muted" style="margin: 0.25rem 0 0 0;">${record.date}</p>
                     </div>
-                    <div class="text-right">
-                        <p class="text-sm font-medium">Punteggio</p>
-                        <p class="font-bold text-primary">${record.score} / ${record.total}</p>
+                    <div style="text-align: right;">
+                        <p class="text-sm font-medium" style="margin: 0;">Punteggio</p>
+                        <p class="font-bold text-primary" style="margin: 0;">${record.score.toFixed(2)} / ${record.total}</p>
                     </div>
                 </div>
-            `
-          )
-          .join('');
-      }
-
-      // 6. LOGICA QUIZ
-      function startQuiz() {
-        const numSelection = document.getElementById('num-questions').value;
-        const parsedData = parseQuestions();
-        let shuffled = shuffleArray(parsedData);
-
-        if (numSelection !== 'all') {
-          shuffled = shuffled.slice(0, parseInt(numSelection));
+            `).join('');
         }
 
-        // Mescola le opzioni
-        state.questions = shuffled.map((q) => ({
-          ...q,
-          options: shuffleArray(q.options),
-        }));
+        // 6. LOGICA QUIZ (Adattata per action bar fissa)
+        function startQuiz() {
+            const numSelection = document.getElementById('num-questions').value;
+            const parsedData = parseQuestions();
+            let shuffled = shuffleArray(parsedData);
 
-        state.currentIndex = 0;
-        state.score = 0;
-        state.selectedOption = null;
-        state.isSubmitted = false;
-
-        renderQuiz();
-        switchView('view-quiz');
-      }
-
-      function renderQuiz() {
-        const q = state.questions[state.currentIndex];
-        const progress =
-          ((state.currentIndex + 1) / state.questions.length) * 100;
-
-        // Aggiorna Header e Progress Bar
-        document.getElementById('quiz-progress-text').innerText = `Quesito ${
-          state.currentIndex + 1
-        } di ${state.questions.length}`;
-        document.getElementById(
-          'quiz-id-text'
-        ).innerText = `ID originario: ${q.id}`;
-        document.getElementById('quiz-score').innerText = state.score;
-        document.getElementById(
-          'quiz-progress-bar'
-        ).style.width = `${progress}%`;
-        document.getElementById('question-text').innerText = q.questionText;
-
-        // Aggiorna Bottoni di controllo
-        const btnSubmit = document.getElementById('btn-submit');
-        const btnNext = document.getElementById('btn-next');
-        const btnNextText = document.getElementById('btn-next-text');
-
-        if (!state.isSubmitted) {
-          btnSubmit.classList.remove('hidden');
-          btnNext.classList.add('hidden');
-          btnSubmit.disabled = state.selectedOption === null;
-        } else {
-          btnSubmit.classList.add('hidden');
-          btnNext.classList.remove('hidden');
-          btnNextText.innerText =
-            state.currentIndex < state.questions.length - 1
-              ? 'Prossima Domanda'
-              : 'Termina';
-        }
-
-        // Aggiorna Griglia Opzioni
-        const optionsGrid = document.getElementById('options-grid');
-        optionsGrid.innerHTML = '';
-
-        q.options.forEach((opt, i) => {
-          const btn = document.createElement('button');
-          const isSelected = state.selectedOption === opt;
-          let btnClass = 'option-btn';
-          let iconHtml = '';
-
-          if (!state.isSubmitted) {
-            if (isSelected) btnClass += ' selected';
-          } else {
-            if (opt.isCorrect) {
-              btnClass += ' correct';
-              iconHtml =
-                '<i data-lucide="check-circle" class="icon-lg text-success"></i>';
-            } else if (isSelected && !opt.isCorrect) {
-              btnClass += ' wrong';
-              iconHtml =
-                '<i data-lucide="x-circle" class="icon-lg text-error"></i>';
-            } else {
-              btnClass += ' disabled-neutral';
+            if (numSelection !== 'all') {
+                shuffled = shuffled.slice(0, parseInt(numSelection));
             }
-          }
 
-          btn.className = btnClass;
-          btn.disabled = state.isSubmitted;
-          btn.onclick = () => {
+            // Mescola le opzioni all'interno di ogni domanda
+            state.questions = shuffled.map(q => ({
+                ...q,
+                options: shuffleArray(q.options)
+            }));
+
+            state.currentIndex = 0;
+            state.score = 0;
+            state.selectedOption = null;
+            state.isSubmitted = false;
+
+            renderQuiz();
+            switchView('view-quiz');
+        }
+
+        function renderQuiz() {
+            const q = state.questions[state.currentIndex];
+            const totalQuestions = state.questions.length;
+            const progressPercentage = ((state.currentIndex + 1) / totalQuestions) * 100;
+
+            // Aggiorna Header e Progress Bar Fissi
+            document.getElementById('quiz-progress-text').innerText = `Quesito ${state.currentIndex + 1} di ${totalQuestions}`;
+            document.getElementById('quiz-id-text').innerText = `ID originario: ${q.id}`;
+            document.getElementById('quiz-score').innerText = state.score.toFixed(2);
+            document.getElementById('quiz-progress-bar').style.width = `${progressPercentage}%`;
+
+            // Aggiorna Testo Domanda (dentro area scrollabile)
+            document.getElementById('question-text').innerText = q.questionText;
+
+            // Aggiorna Bottoni di controllo nella Action Bar Fissa
+            const btnSubmit = document.getElementById('btn-submit');
+            const btnNext = document.getElementById('btn-next');
+            const btnNextText = document.getElementById('btn-next-text');
+
             if (!state.isSubmitted) {
-              state.selectedOption = opt;
-              renderQuiz(); // Re-renderizza al click
+                btnSubmit.classList.remove('hidden');
+                btnNext.classList.add('hidden');
+                // Abilita submit solo se un'opzione è selezionata
+                btnSubmit.disabled = (state.selectedOption === null);
+            } else {
+                btnSubmit.classList.add('hidden');
+                btnNext.classList.remove('hidden');
+                btnNextText.innerText = (state.currentIndex < totalQuestions - 1) ? "Prossima Domanda" : "Termina";
             }
-          };
 
-          btn.innerHTML = `<div class="flex-1 text-left">${opt.text}</div>${iconHtml}`;
-          optionsGrid.appendChild(btn);
-        });
+            // Aggiorna Griglia Opzioni (dentro area scrollabile)
+            const optionsGrid = document.getElementById('options-grid');
+            optionsGrid.innerHTML = '';
 
-        // Reinizializza icone Lucide sui nuovi elementi DOM
-        lucide.createIcons();
-      }
+            q.options.forEach((opt) => {
+                const btn = document.createElement('button');
+                const isSelected = (state.selectedOption === opt);
+                let btnClass = "option-btn";
+                let iconHtml = "";
 
-      function handleSubmit() {
-        if (!state.selectedOption) return;
-        state.isSubmitted = true;
+                if (!state.isSubmitted) {
+                    if (isSelected) btnClass += " selected";
+                } else {
+                    if (opt.isCorrect) {
+                        btnClass += " correct";
+                        iconHtml = '<i data-lucide="check-circle" class="icon-lg text-success" style="margin-left: auto;"></i>';
+                    } else if (isSelected && !opt.isCorrect) {
+                        btnClass += " wrong";
+                        iconHtml = '<i data-lucide="x-circle" class="icon-lg text-error" style="margin-left: auto;"></i>';
+                    } else {
+                        btnClass += " disabled-neutral";
+                    }
+                }
 
-        if (state.selectedOption.isCorrect) {
-          state.score += 1;
-        } else {
-          state.score -= 0.25;
+                btn.className = btnClass;
+                // Disabilita i bottoni dopo il submit
+                btn.disabled = state.isSubmitted;
+
+                btn.onclick = () => {
+                    if (!state.isSubmitted) {
+                        state.selectedOption = opt;
+                        renderQuiz(); // Re-renderizza per mostrare la selezione e abilitare il tasto conferma
+                    }
+                };
+
+                // Layout interno dell'opzione: testo a sinistra, icona a destra (se presente)
+                btn.innerHTML = `<div style="flex: 1;">${opt.text}</div>${iconHtml}`;
+                optionsGrid.appendChild(btn);
+            });
+
+            // Reinizializza icone Lucide sui nuovi elementi DOM
+            lucide.createIcons();
+
+            // Scrolla in alto il contenuto della domanda quando si cambia
+            if (!state.isSubmitted) {
+                document.querySelector('#view-quiz .scroll-content').scrollTop = 0;
+            }
         }
 
-        renderQuiz();
-      }
+        function handleSubmit() {
+            if (!state.selectedOption) return;
+            state.isSubmitted = true;
 
-      function handleNext() {
-        if (state.currentIndex < state.questions.length - 1) {
-          state.currentIndex += 1;
-          state.selectedOption = null;
-          state.isSubmitted = false;
-          renderQuiz();
-        } else {
-          // Fine del quiz
-          const finalPercentage = Math.max(
-            0,
-            Math.round((state.score / state.questions.length) * 100)
-          );
+            if (state.selectedOption.isCorrect) {
+                state.score += 1;
+            } else {
+                state.score -= 0.25;
+            }
 
-          const newRecord = {
-            date: new Date().toLocaleString('it-IT'),
-            score: state.score,
-            total: state.questions.length,
-            percentage: finalPercentage,
-          };
-
-          state.history = [newRecord, ...state.history];
-          localStorage.setItem('quiz_history', JSON.stringify(state.history));
-
-          // Renderizza Risultato
-          document.getElementById(
-            'result-percentage'
-          ).innerText = `${finalPercentage}%`;
-          document.getElementById(
-            'result-score-text'
-          ).innerText = `Hai ottenuto ${state.score} punti su ${state.questions.length}.`;
-
-          switchView('view-result');
+            renderQuiz();
         }
-      }
+
+        function handleNext() {
+            if (state.currentIndex < state.questions.length - 1) {
+                state.currentIndex += 1;
+                state.selectedOption = null;
+                state.isSubmitted = false;
+                renderQuiz();
+            } else {
+                // Fine del quiz: salvataggio storico e vista risultati
+                const totalQuestions = state.questions.length;
+                // Calcolo percentuale basato sul punteggio massimo teorico (punti ottenuti / numero domande)
+                const finalPercentage = Math.max(0, Math.round((state.score / totalQuestions) * 100));
+
+                const newRecord = {
+                    date: new Date().toLocaleString('it-IT'),
+                    score: state.score,
+                    total: totalQuestions,
+                    percentage: finalPercentage
+                };
+
+                // Aggiunge in testa allo storico
+                state.history = [newRecord, ...(state.history || [])];
+                // Limita a 10 record
+                if (state.history.length > 10) state.history = state.history.slice(0, 10);
+
+                localStorage.setItem('quiz_history_v2', JSON.stringify(state.history));
+
+                // Renderizza Vista Risultato
+                document.getElementById('result-percentage').innerText = `${finalPercentage}%`;
+                document.getElementById('result-score-text').innerText = `Hai ottenuto ${state.score.toFixed(2)} punti su ${totalQuestions} domande.`;
+
+                switchView('view-result');
+            }
+        }
     </script>
-  </body>
+</body>
+
 </html>
