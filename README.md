@@ -15,5 +15,5 @@ L'applicativo è progettato per testare la comprensione dei seguenti pilastri in
 - **Interfaccia:** Gestione sequenziale dei quesiti con valutazione finale.
 - **Data Scoring:** Algoritmo di calcolo del punteggio basato su criteri accademici standard.
 - **Modularità:** Struttura predisposta per l'espansione del database dei quiz tramite file di configurazione esterni.
-##Visiona la versione ufficiale
-![Ufficiale](https://nrtlc-a-quiz.vercel.app/)
+## Visiona la versione ufficiale
+https://nrtlc-a-quiz.vercel.app/
